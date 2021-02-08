@@ -26,4 +26,15 @@ public class RpcResponse implements Serializable {
     rpcResponse.setReturnValue("没有服务提供者");
     return rpcResponse;
   }
+  /**
+   * 没有服务提供者
+   *
+   * @return
+   */
+  public static RpcResponse TIME_OUT(String requestId) {
+    RpcResponse rpcResponse = new RpcResponse();
+    rpcResponse.setRequestId(requestId);
+    rpcResponse.setReturnValue("超时TimeOut");
+    return rpcResponse;
+  }
 }

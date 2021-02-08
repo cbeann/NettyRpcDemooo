@@ -18,6 +18,7 @@ import lombok.Data;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author chaird
@@ -93,7 +94,7 @@ public class NettyClient {
       String s = JSONUtil.toJsonStr(msg);
       f.channel().writeAndFlush(s);
 
-      rpcResponse = future.get();
+      rpcResponse = future.get(2000, TimeUnit.MILLISECONDS);
     } catch (Exception e) {
       e.printStackTrace();
     } finally {

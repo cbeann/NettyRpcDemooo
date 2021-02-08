@@ -4,18 +4,27 @@ import cn.hutool.json.JSONUtil;
 import com.rpc.model.ProviderBean;
 import com.rpc.properties.RpcProperties;
 import lombok.Data;
-import org.apache.zookeeper.*;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author chaird
  * @create 2021-02-06 23:47
  */
 @Data
-public class ZKServer{
+public class ZKServer implements ApplicationContextAware {
 
+  private RpcProperties rpcProperties;
+  private Watcher watcher;
 
   private String ip;
   private Integer port;
@@ -28,21 +37,39 @@ public class ZKServer{
   /** 创建完改对象后创建目录 */
   @PostConstruct
   public void postConstruct() {
+    // 初始化
+    init();
     // 在zk上创建目录
     createRpcPath();
 
-    // 注册监听器
-    //doRegisterWatcher();
+    // 给某个目录添加监听器
+    addWatcher();
   }
 
-  /** 注册监听器 */
-  @Deprecated
-  private void doRegisterWatcher() {
+  /** 初始化 */
+  private void init() {
+    this.ip = rpcProperties.getRegisterAddress();
+    this.port = rpcProperties.getServerPort();
+    this.path = rpcProperties.getPath();
+    this.providerPath = rpcProperties.getProviderPath();
+    this.consumerPath = rpcProperties.getConsumerPath();
+
+    String url = ip + ":" + port;
+
+    try {
+      zk = new ZooKeeper(url, 5000, watcher);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  /** 给某个目录添加监听器 */
+  private void addWatcher() {
 
     try {
       String listenProviderPath = path + providerPath;
       // 添加自定义监听器
-      zk.register(null);
       zk.getChildren(listenProviderPath, true);
     } catch (Exception e) {
       e.printStackTrace();
@@ -66,41 +93,7 @@ public class ZKServer{
     }
   }
 
-  public ZKServer(RpcProperties rpcProperties) {
-
-    this.ip = rpcProperties.getRegisterAddress();
-    this.port = rpcProperties.getServerPort();
-    this.path = rpcProperties.getPath();
-    this.providerPath = rpcProperties.getProviderPath();
-    this.consumerPath = rpcProperties.getConsumerPath();
-
-    String url = ip + ":" + port;
-
-    try {
-      zk =
-          new ZooKeeper(
-              url,
-              5000,
-              new Watcher() {
-                @Override
-                public void process(WatchedEvent event) {
-                  // 获取事件的状态
-                  Event.KeeperState keeperState = event.getState();
-                  Event.EventType eventType = event.getType();
-                  // 如果是建立连接
-                  if (Event.KeeperState.SyncConnected == keeperState) {
-                    if (Event.EventType.None == eventType) {
-                      // 如果建立连接成功，则发送信号量，让后续阻塞程序向下执行
-                      System.out.println("zk 建立连接");
-                    }
-                  }
-                }
-              });
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+  public ZKServer() {}
 
   public List<String> getChild(String path) throws Exception {
     List<String> children = zk.getChildren(path, true);
@@ -139,5 +132,35 @@ public class ZKServer{
     }
   }
 
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.rpcProperties = applicationContext.getBean(RpcProperties.class);
+    this.watcher = applicationContext.getBean(Watcher.class);
+  }
 
+
+  @Override
+  public String toString() {
+    return "ZKServer{" +
+            "rpcProperties=" + rpcProperties +
+            ", ip='" + ip + '\'' +
+            ", port=" + port +
+            ", path='" + path + '\'' +
+            ", providerPath='" + providerPath + '\'' +
+            ", consumerPath='" + consumerPath + '\'' +
+            '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ZKServer zkServer = (ZKServer) o;
+    return Objects.equals(rpcProperties, zkServer.rpcProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(rpcProperties);
+  }
 }

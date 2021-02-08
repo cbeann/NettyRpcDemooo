@@ -79,7 +79,7 @@ public class RpcFactoryProxy<T> implements InvocationHandler {
     RpcResponse response = nettyClient.sendMessage(rpcRequest);
 
     if (response == null) {
-      throw new Exception("the response is null");
+      response = RpcResponse.TIME_OUT(rpcRequest.getRequestId());
     }
 
     return response.getReturnValue();

@@ -30,6 +30,11 @@ public class RpcServiceChangeWatcher implements Watcher, ApplicationContextAware
     System.out.println(event);
 
     // 实际业务
+    try {
+      nettyClientBootStarp.refreshProviders();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     // 重新监听
     String providersPath = rpcProperties.getPath() + rpcProperties.getProviderPath();

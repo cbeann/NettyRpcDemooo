@@ -38,18 +38,22 @@ public class NettyClientBootStarp implements ApplicationContextAware {
 
   @PostConstruct
   public void postConstruct() throws Exception {
-    //连接NettyServer
+    // 连接NettyServer
     connectProviders();
   }
 
-
+  /** 更新服务 */
+  public void refreshProviders() throws Exception {
+    connectProviders();
+  }
 
   /**
    * 连接NettyServer
+   *
    * @throws Exception
    */
   private void connectProviders() throws Exception {
-
+    providers = new HashMap<>();
     String providerPath = rpcProperties.getPath() + rpcProperties.getProviderPath();
     List<String> provders = zkServer.getChild(providerPath);
 
@@ -66,8 +70,6 @@ public class NettyClientBootStarp implements ApplicationContextAware {
       providers.put(provderName, nettyClientGroup);
     }
   }
-
-
 
   /**
    * 给容器填充属性
