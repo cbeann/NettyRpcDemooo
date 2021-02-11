@@ -1,9 +1,7 @@
 package com.demo.rpcexampleclient.controller;
 
 import com.rpc.annotation.RpcService;
-import com.rpc.client.NettyClientBootStarp;
 import com.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,10 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-  @RpcService("provider01")
+  @RpcService("provider01") // 自定义注解，其中value为服务提供者名称，类似OpenFeign的使用
   private StudentService studentService;
 
-  @Autowired private NettyClientBootStarp nettyClientBootStarp;
 
   @GetMapping("/index/{id}")
   public Object hello(@PathVariable Integer id) {
