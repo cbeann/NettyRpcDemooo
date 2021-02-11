@@ -20,6 +20,7 @@ mvn  clean install -DskipTests=true
 ```
 
 #服务端
+
 ##添加依赖
  ```xml
  <dependency>
@@ -45,6 +46,7 @@ rpc.server.provider-port=18083
 
 
 #客户端
+
 ##添加依赖
  ```xml
  <dependency>
@@ -58,7 +60,7 @@ rpc.server.provider-port=18083
  ```properties
 ###服务注册中心地址
 #zk的IP
-rpc.register-address=39.105.30.146
+rpc.register-address=127.0.0.1
 #zk的端口
 rpc.server-port=2181
 
