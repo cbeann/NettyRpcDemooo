@@ -4,7 +4,7 @@ Netty+自定义starter+zk
 #使用方法
 1.下载代码到本地
 ```bash
-git clone git@github.com:cbeann/NettyRpcDemooo.git
+git clone https://github.com/cbeann/NettyRpcDemooo.git
 ```
 2. 打包到本地
 ```bash
