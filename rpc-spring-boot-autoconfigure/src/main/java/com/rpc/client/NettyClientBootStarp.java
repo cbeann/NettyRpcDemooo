@@ -29,6 +29,8 @@ public class NettyClientBootStarp implements ApplicationContextAware {
   /** 全局属性 */
   private RpcProperties rpcProperties;
 
+  private boolean hasInit = false;
+
   /** 服务消费者名称 */
   private String consumerName;
   /** 和NettyServer建立连接的NettyClient */
@@ -53,6 +55,11 @@ public class NettyClientBootStarp implements ApplicationContextAware {
    * @throws Exception
    */
   private void connectProviders() throws Exception {
+
+    if (!hasInit){
+      return;
+    }
+
     providers = new HashMap<>();
     String providerPath = rpcProperties.getPath() + rpcProperties.getProviderPath();
     List<String> provders = zkServer.getChild(providerPath);
@@ -85,5 +92,7 @@ public class NettyClientBootStarp implements ApplicationContextAware {
     this.rpcProperties = applicationContext.getBean(RpcProperties.class);
 
     this.consumerName = rpcClientProperties.getConsumerName();
+
+    this.hasInit = true;
   }
 }
