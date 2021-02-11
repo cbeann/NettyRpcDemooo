@@ -3,8 +3,8 @@ package com.rpc.client;
 import java.util.concurrent.*;
 
 /**
- * @author 2YSP
- * @date 2020/8/19 22:31
+ * @author chaird
+ * @create 2021-02-07 10:20
  */
 public class RpcFuture<T> implements Future<T> {
 

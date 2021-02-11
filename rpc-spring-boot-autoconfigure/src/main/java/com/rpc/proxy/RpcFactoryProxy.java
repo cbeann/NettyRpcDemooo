@@ -75,7 +75,6 @@ public class RpcFactoryProxy<T> implements InvocationHandler {
     rpcRequest.setParameters(args);
 
     // 发送消息
-    // Future future = nettyClient.sendMessage(rpcRequest);
     RpcResponse response = nettyClient.sendMessage(rpcRequest);
 
     if (response == null) {

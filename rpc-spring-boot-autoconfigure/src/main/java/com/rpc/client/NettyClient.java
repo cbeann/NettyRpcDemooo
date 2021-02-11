@@ -104,11 +104,7 @@ public class NettyClient {
     return rpcResponse;
   }
 
-  //  public void sendMessage(RpcRequest msg) {
-  //    // 存起来
-  //    String s = JSONUtil.toJsonStr(msg);
-  //    f.channel().writeAndFlush(s);
-  //  }
+
 
   @Override
   public boolean equals(Object o) {

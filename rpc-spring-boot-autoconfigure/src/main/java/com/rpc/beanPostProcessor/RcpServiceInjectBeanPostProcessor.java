@@ -14,6 +14,7 @@ import java.util.Objects;
 /**
  * @author chaird
  * @create 2021-02-07 17:03
+ * 该BeanPostProcessor用于注入远程服务接口代理类
  */
 public class RcpServiceInjectBeanPostProcessor
     implements InstantiationAwareBeanPostProcessor, ApplicationContextAware {
