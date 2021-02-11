@@ -89,6 +89,14 @@ public class HelloController {
 ```
 
 #案例
+url:https://github.com/cbeann/NettyRpcDemooo
 
+| 模块                        | 模块内容      | 备注 |
+| ----------------------------- | ----------------- | ---- |
+| rpc-spring-boot-autoconfigure | 自定义rpc-starter | 源码 |
+| rpc-spring-boot-starter       | 自定义rpc-starter | 源码 |
+| rpc-example-api               | 案例api         | 案例 |
+| rpc-example-server            | 案例服务者   | 案例 |
+| rpc-example-client            | 案例消费者   | 案例 |
 #参考
 https://github.com/2YSP/rpc-spring-boot-starter#rpc-spring-boot-starter
