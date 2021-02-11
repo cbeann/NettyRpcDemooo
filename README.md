@@ -6,7 +6,7 @@ Netty+自定义starter+zk
 ```bash
 git clone https://github.com/cbeann/NettyRpcDemooo.git
 ```
-2. 打包到本地
+2. 打包到本地(建议导入IDEA在打包)
 ```bash
 mvn  clean install -DskipTests=true
 ```
