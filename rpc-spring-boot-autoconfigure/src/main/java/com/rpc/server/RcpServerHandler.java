@@ -1,6 +1,7 @@
 package com.rpc.server;
 
 import cn.hutool.json.JSONUtil;
+import com.rpc.constant.ConstantPool;
 import com.rpc.model.RpcRequest;
 import com.rpc.model.RpcResponse;
 import com.rpc.utils.String2Class;
@@ -31,6 +32,16 @@ public class RcpServerHandler extends SimpleChannelInboundHandler<String> {
         //"{\"methodName\":\"getId\",\"serviceName\":\"provider01\",\"requestId\":\"d53815a0\",\"parameters\":[1],\"clazzName\":\"com.service.StudentService\",\"parameterTypeStrings\":[\"java.lang.Integer\"]}";
 
     RpcRequest requestBean = JSONUtil.toBean(msg, RpcRequest.class);
+
+    //心跳逻辑
+    if (ConstantPool.HEART_BEAT.equals(requestBean.getRequestId())){
+      System.out.println("服务端接收到心跳");
+      RpcResponse rpcResponse = RpcResponse.HEART_BEAT();
+      String s = JSONUtil.toJsonStr(rpcResponse);
+      ctx.channel().writeAndFlush(s);
+      return;
+    }
+
     String[] parameterTypeStrings = requestBean.getParameterTypeStrings();
     Class<?>[] parameterTypes = String2Class.string2Class(parameterTypeStrings);
     requestBean.setParameterTypes(parameterTypes);
