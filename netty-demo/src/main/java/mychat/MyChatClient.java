@@ -1,7 +1,5 @@
 package mychat;
 
-
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -21,47 +19,45 @@ import java.util.Scanner;
  */
 public class MyChatClient {
 
+  public static void main(String[] args) throws Exception {
+    int port = 8888;
+    String host = "127.0.0.1";
+    // 配置客户端NIO线程组
+    EventLoopGroup group = new NioEventLoopGroup();
+    try {
+      Bootstrap b = new Bootstrap();
+      b.group(group)
+          .channel(NioSocketChannel.class)
+          .handler(
+              new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel socketChannel) throws Exception {
 
-    public static void main(String[] args) throws Exception {
-        int port = 8888;
-        String host = "127.0.0.1";
-        //配置客户端NIO线程组
-        EventLoopGroup group = new NioEventLoopGroup();
-        try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                    .channel(NioSocketChannel.class)
-                    .handler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                  socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8));
+                  socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
+                  // TimeClientHandler是自己定义的方法
+                  socketChannel.pipeline().addLast(new MyChatClientHandler());
+                }
+              });
+      // 发起异步连接操作
+      ChannelFuture f = b.connect(host, port).sync();
 
-                            socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8));
-                            socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
-                            //TimeClientHandler是自己定义的方法
-                            socketChannel.pipeline().addLast(new MyChatClientHandler());
-                        }
-                    });
-            //发起异步连接操作
-            ChannelFuture f = b.connect(host, port).sync();
+      //            //发送数据
+      Scanner reader = new Scanner(System.in);
+      String body = reader.nextLine();
+      while (!"exit".equals(body)) {
+        f.channel().writeAndFlush(body);
+        body = reader.nextLine();
+      }
 
+      // 等待客户端链路关闭
+      f.channel().closeFuture().sync();
 
-//            //发送数据
-            Scanner reader = new Scanner(System.in);
-            String body = reader.nextLine();
-            while (!"exit".equals(body)) {
-                f.channel().writeAndFlush(body);
-                body = reader.nextLine();
-            }
+    } catch (Exception e) {
 
-
-            //等待客户端链路关闭
-            f.channel().closeFuture().sync();
-
-        } catch (Exception e) {
-
-        } finally {
-            //优雅关闭
-            group.shutdownGracefully();
-        }
+    } finally {
+      // 优雅关闭
+      group.shutdownGracefully();
     }
+  }
 }
