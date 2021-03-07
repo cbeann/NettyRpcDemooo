@@ -1,5 +1,6 @@
 package com.rpc.model;
 
+import com.rpc.constant.ConstantPool;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -37,4 +38,17 @@ public class RpcResponse implements Serializable {
     rpcResponse.setReturnValue("超时TimeOut");
     return rpcResponse;
   }
+
+  /**
+   * 心跳
+   *
+   * @return
+   */
+  public static RpcResponse HEART_BEAT() {
+    RpcResponse rpcResponse = new RpcResponse();
+    rpcResponse.setRequestId(ConstantPool.HEART_BEAT);
+    return rpcResponse;
+  }
+
+
 }

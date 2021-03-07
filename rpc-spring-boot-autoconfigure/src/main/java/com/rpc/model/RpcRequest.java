@@ -1,5 +1,6 @@
 package com.rpc.model;
 
+import com.rpc.constant.ConstantPool;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,4 +24,15 @@ public class RpcRequest implements Serializable {
   private String[] parameterTypeStrings;
 
   private Object[] parameters;
+
+  /**
+   * 心跳
+   *
+   * @return
+   */
+  public static RpcRequest heartBeatRequest() {
+    RpcRequest rpcRequest = new RpcRequest();
+    rpcRequest.setRequestId(ConstantPool.HEART_BEAT);
+    return rpcRequest;
+  }
 }

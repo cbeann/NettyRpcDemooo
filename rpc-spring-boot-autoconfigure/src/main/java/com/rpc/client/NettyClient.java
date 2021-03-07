@@ -13,6 +13,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
 import lombok.Data;
 import org.springframework.context.ApplicationContext;
@@ -74,6 +75,9 @@ public class NettyClient {
                   socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
                   // TimeClientHandler是自己定义的方法
                   socketChannel.pipeline().addLast(new RpcClientHandler());
+                  //心跳机制
+                  socketChannel.pipeline().addLast(new IdleStateHandler(1, 1, 1, TimeUnit.SECONDS));//添加心跳机制
+                  socketChannel.pipeline().addLast(new IdleStateTrigger());//添加心跳机制触发器
                 }
               });
       // 发起异步连接操作
