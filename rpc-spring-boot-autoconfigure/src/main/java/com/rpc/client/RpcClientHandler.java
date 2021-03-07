@@ -22,6 +22,7 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> {
 
     if (ConstantPool.HEART_BEAT.equals(rpcResponse.getRequestId())) {
       System.out.println("客户端接收到心跳");
+      return;
     }
 
     RpcFuture future = FuturePool.get(rpcResponse.getRequestId());

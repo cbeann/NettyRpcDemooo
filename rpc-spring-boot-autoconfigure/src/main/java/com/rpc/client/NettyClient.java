@@ -76,7 +76,7 @@ public class NettyClient {
                   // TimeClientHandler是自己定义的方法
                   socketChannel.pipeline().addLast(new RpcClientHandler());
                   //心跳机制
-                  socketChannel.pipeline().addLast(new IdleStateHandler(1, 1, 1, TimeUnit.SECONDS));//添加心跳机制
+                  socketChannel.pipeline().addLast(new IdleStateHandler(10, 10, 10, TimeUnit.SECONDS));//添加心跳机制
                   socketChannel.pipeline().addLast(new IdleStateTrigger());//添加心跳机制触发器
                 }
               });
