@@ -11,6 +11,7 @@
         <module>rpc-spring-boot-autoconfigure</module>
         <module>rpc-spring-boot-starter</module>
         <module>rpc-example-api</module>
+        <module>netty-demo</module>
     </modules>
     <packaging>pom</packaging>
 
