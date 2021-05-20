@@ -57,7 +57,7 @@ public class ZKServer implements ApplicationContextAware {
     String url = ip + ":" + port;
 
     try {
-      zk = new ZooKeeper(url, 5000, watcher);
+      zk = new ZooKeeper(url, 500000, watcher);
 
     } catch (Exception e) {
       e.printStackTrace();
