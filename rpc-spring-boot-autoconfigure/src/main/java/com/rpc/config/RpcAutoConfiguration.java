@@ -11,10 +11,12 @@ import com.rpc.zk.RpcServiceChangeWatcher;
 import com.rpc.zk.ZKServer;
 import org.apache.zookeeper.Watcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * @author chaird
@@ -45,6 +47,7 @@ public class RpcAutoConfiguration {
 
   @Bean
   @ConditionalOnProperty(prefix = "rpc.client", name = "consumer-name", matchIfMissing = false)
+  @Primary
   public Watcher rpcServiceChangeWatcher() {
     RpcServiceChangeWatcher rpcServiceChangeWatcher = new RpcServiceChangeWatcher();
     return rpcServiceChangeWatcher;
