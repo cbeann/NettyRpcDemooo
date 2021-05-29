@@ -100,6 +100,7 @@ url:https://github.com/cbeann/NettyRpcDemooo
 | rpc-example-api               | 案例api         | 案例 |
 | rpc-example-server            | 案例服务者   | 案例 |
 | rpc-example-client            | 案例消费者   | 案例 |
+| rpc-example-serverclient            | 案例服务提供者&消费者   | 案例 |
 
 
 
